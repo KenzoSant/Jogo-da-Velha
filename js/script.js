@@ -84,23 +84,24 @@ function clickedBox(element) {
     element.style.pointerEvents = "none";
 
     if (currentPlayer === "player2" && runBot) {
-        if (players.classList.contains("player")) {
-            playerSign = "O";
-            element.innerHTML = `<i class="${playerOIcon}"></i>`;
-            players.classList.remove("active");
-            element.setAttribute("id", playerSign);
-            //body.style.background = "linear-gradient(to left, #43939E, #3C746B)";
+      if (players.classList.contains("player")) {
+        playerSign = "O";
+        element.innerHTML = `<i class="${playerOIcon}"></i>`;
+        players.classList.remove("active");
+        element.setAttribute("id", playerSign);
+        //body.style.background = "linear-gradient(to left, #43939E, #3C746B)";
     
-        } else {
-            playerSign = "X";
-            element.innerHTML = `<i class="${playerXIcon}"></i>`;
-            players.classList.add("active");
-            element.setAttribute("id", playerSign);
-            //body.style.background = "linear-gradient(to right, #3C746B, #43939E)";
-        }
-        selectWinner();
-        element.style.pointerEvents = "none";
+      }else {
+        playerSign = "X";
+        element.innerHTML = `<i class="${playerXIcon}"></i>`;
+        players.classList.add("active");
+        element.setAttribute("id", playerSign);
+        //body.style.background = "linear-gradient(to right, #3C746B, #43939E)";
+      }
+      selectWinner();
+      element.style.pointerEvents = "none";
     }
+
     let randomDelayTime = ((Math.random() * 1000) + 210).toFixed();
     setTimeout(() => {
       bot(runBot);
@@ -155,38 +156,40 @@ function selectWinner() {
   }
 }
 
-function bot(runBot){
+function bot(runBot,element){
+  if(runBot){
+    let array = [];
+    playerSign = "O";
 
-    if(runBot){
-        let array = [];
-        playerSign = "O";
-        for (let i = 0; i < allBox.length; i++) {
-            if(allBox[i].childElementCount == 0){
-                array.push(i);
-            }
-            
-        }
-        let randomBox = array[Math.floor(Math.random() * array.length)];
-        if(array.length > 0){
-            if(players.classList.contains("player")){
-                playerSign = "X";
-                allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
-                players.classList.add("active");
-                allBox[randomBox].setAttribute("id", playerSign);
-                //body.style.background = "linear-gradient(to right, #43939E, #3C746B)";
-                
-            }else{
-                allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
-                players.classList.remove("active");
-                allBox[randomBox].setAttribute("id", playerSign);
-                //body.style.background = "linear-gradient(to left, #3C746B,#43939E)";
-            } 
-            
-            
-            selectWinner(); 
-        }
-        allBox[randomBox].style.pointerEvents = "none";
+    for (let i = 0; i < allBox.length; i++) {
+      if(allBox[i].childElementCount == 0){
+          array.push(i);
+      }           
     }
+
+    let randomBox = array[Math.floor(Math.random() * array.length)];
+      if(array.length > 0){
+        if(players.classList.contains("player")){
+          playerSign = "X";
+          allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
+          players.classList.add("active");
+          allBox[randomBox].setAttribute("id", playerSign);
+          //body.style.background = "linear-gradient(to right, #43939E, #3C746B)";
+          selectWinner(); 
+          element.style.pointerEvents = "none";
+                
+        }else{
+          allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
+          players.classList.remove("active");
+          allBox[randomBox].setAttribute("id", playerSign);
+          //body.style.background = "linear-gradient(to left, #3C746B,#43939E)";
+          selectWinner(); 
+          element.style.pointerEvents = "none";
+        }   
+        
+      }
+      allBox[randomBox].style.pointerEvents = "none";
+  }
 
 }
 
