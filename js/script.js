@@ -98,6 +98,8 @@ function clickedBox(element) {
             element.setAttribute("id", playerSign);
             //body.style.background = "linear-gradient(to right, #3C746B, #43939E)";
         }
+        selectWinner();
+        element.style.pointerEvents = "none";
     }
     let randomDelayTime = ((Math.random() * 1000) + 210).toFixed();
     setTimeout(() => {
