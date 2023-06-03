@@ -7,12 +7,15 @@ const selectPVP = selectModo.querySelector(".option .pvp");
 const selectPVE = selectModo.querySelector(".option .pve");
 const selectXBtn = selectBox.querySelector(".option .playerX");
 const selectOBtn = selectBox.querySelector(".option .playerO");
+const XpointElement = document.querySelector(".Xpoint");
+const OpointElement = document.querySelector(".Opoint");
 const playBoard = document.querySelector(".play-board");
 const allBox = document.querySelectorAll("section span");
 const players = document.querySelector(".players");
 const resultBox = document.querySelector(".result-box");
 const wonText = resultBox.querySelector(".won-text");
-const replayBtn = resultBox.querySelector("button");
+const replayBtn = resultBox.querySelector(".replay");
+const sairBtn = resultBox.querySelector(".sair");
 const body = document.querySelector("body");
 
 let playerXIcon = "fas fa-times";
@@ -20,6 +23,8 @@ let playerOIcon = "far fa-circle";
 let playerSign = "X";
 let currentPlayer = "player1";
 let runBot = true;
+let Xpoints = 0;
+let Opoints = 0;
 
 window.onload = () => {
   for (let i = 0; i < allBox.length; i++) {
@@ -102,10 +107,12 @@ function clickedBox(element) {
       element.style.pointerEvents = "none";
     }
 
-    let randomDelayTime = ((Math.random() * 1000) + 210).toFixed();
-    setTimeout(() => {
-      bot(runBot);
-    }, randomDelayTime);
+    if (currentPlayer !== "") {
+        let randomDelayTime = ((Math.random() * 1000) + 210).toFixed();
+        setTimeout(() => {
+          bot(runBot);
+        }, randomDelayTime);
+    }
   }
 }
 
@@ -140,6 +147,25 @@ function selectWinner() {
     }, 700);
     wonText.innerHTML = `Jogador <p>${playerSign}</p> Ganhou!`;
     currentPlayer = "";
+
+    if (playerSign === "X") {
+      Xpoints++;
+      XpointElement.textContent = Xpoints;
+    } else {
+      Opoints++;
+      OpointElement.textContent = Opoints;
+    }
+
+    if (runBot && currentPlayer === "player2") {
+      if (playerSign === "X") {
+        Opoints--;
+        OpointElement.textContent = Opoints;
+      } else {
+        Xpoints--;
+        XpointElement.textContent = Xpoints;
+      }
+    }
+
   } else {
     const allBoxesFilled = Array.from(allBox).every((box) => {
       return box.getAttribute("id") === "X" || box.getAttribute("id") === "O";
@@ -174,25 +200,50 @@ function bot(runBot,element){
           allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
           players.classList.add("active");
           allBox[randomBox].setAttribute("id", playerSign);
-          //body.style.background = "linear-gradient(to right, #43939E, #3C746B)";
-          selectWinner(); 
-          element.style.pointerEvents = "none";
-                
+          //body.style.background = "linear-gradient(to right, #43939E, #3C746B)";               
         }else{
           allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
           players.classList.remove("active");
           allBox[randomBox].setAttribute("id", playerSign);
           //body.style.background = "linear-gradient(to left, #3C746B,#43939E)";
-          selectWinner(); 
-          element.style.pointerEvents = "none";
         }   
-        
-      }
+        selectWinner();
+      }     
       allBox[randomBox].style.pointerEvents = "none";
   }
 
 }
 
 replayBtn.onclick = () => {
-  window.location.reload();
+  // Limpar o tabuleiro
+  for (let i = 0; i < allBox.length; i++) {
+    allBox[i].innerHTML = "";
+    allBox[i].removeAttribute("id");
+    allBox[i].style.pointerEvents = "auto";
+  }
+
+  // Limpar o resultado
+  resultBox.classList.remove("show");
+
+  // Voltar a exibir o tabuleiro
+  playBoard.classList.add("show");
+
+  // Ativar novamente o jogador 1
+  currentPlayer = "player1";
+  players.classList.remove("active");
+
+  // Reativar o botão de seleção de jogador
+  selectXBtn.disabled = false;
+  selectOBtn.disabled = false;
 };
+
+sairBtn.onclick = ()=>{
+  window.location.reload();
+}
+
+
+
+
+
+
+

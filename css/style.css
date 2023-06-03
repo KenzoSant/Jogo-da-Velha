@@ -129,17 +129,35 @@ header{
    
 }
 
-.play-board .details{
+.play-board .details,
+.play-board .scoreboard{
     background: #fff;
     padding: 7px;
     border-radius: 5px;
 }
 
-.play-board .details .players{
+.play-board .details .players,
+.play-board .scoreboard .points{
     display: flex;
     width: 100%;
     position:relative;
     justify-content: space-around;
+}
+
+.scoreboard .points span{
+    background-color: var(--first-color);
+    color:  white;
+    width: 100%;
+    border-radius: 5px;
+    padding: 7px 0;
+    margin: 0 5px 0 5px;
+    font-size: 19px;
+    font-weight: 500;
+    cursor: default;
+    text-align: center;
+    position: relative;
+    z-index: 5;
+    transition: all 0.3s ease;
 }
 
 .play-board .details span{
@@ -241,9 +259,11 @@ header{
 }
 
 .result-box .btn button {
+    width: 100%;
     font-size: 18px;
     font-weight: 500;
-    padding: 8px 20px;
+    padding: 8px 0;
+    margin: 3px;
     border: none;
     outline: none;
     background: var(--first-color);
