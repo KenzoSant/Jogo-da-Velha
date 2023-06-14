@@ -22,6 +22,7 @@ let playerXIcon = "fas fa-times";
 let playerOIcon = "far fa-circle";
 let playerSign = "X";
 let currentPlayer = "player1";
+let startingPlayer = "player1"; 
 let runBot = true;
 let Xpoints = 0;
 let Opoints = 0;
@@ -58,6 +59,7 @@ window.onload = () => {
     selectBox.style.display = "none";
     playBoard.classList.add("show");
     currentPlayer = "player1";
+    startingPlayer = "player1"; 
   };
 
   selectOBtn.onclick = () => {
@@ -65,7 +67,10 @@ window.onload = () => {
     playBoard.classList.add("show");
     players.setAttribute("class", "players active player");
     currentPlayer = "player2";
-    
+    startingPlayer = "player2"; 
+    setTimeout(() => {
+      bot(runBot); 
+    }, 300);
   };
 };
 
@@ -77,11 +82,13 @@ function clickedBox(element) {
       players.classList.remove("active");
       element.setAttribute("id", playerSign);
       currentPlayer = "player2";
+      players.classList.add("active");
     } else if (currentPlayer === "player2" && !runBot) {
       playerSign = "O";
       element.innerHTML = `<i class="${playerOIcon}"></i>`;
       players.classList.add("active");
       element.setAttribute("id", playerSign);
+      players.classList.remove("active");
       currentPlayer = "player1";
     }
 
@@ -94,24 +101,21 @@ function clickedBox(element) {
         element.innerHTML = `<i class="${playerOIcon}"></i>`;
         players.classList.remove("active");
         element.setAttribute("id", playerSign);
-        //body.style.background = "linear-gradient(to left, #43939E, #3C746B)";
-    
-      }else {
+      } else {
         playerSign = "X";
         element.innerHTML = `<i class="${playerXIcon}"></i>`;
         players.classList.add("active");
         element.setAttribute("id", playerSign);
-        //body.style.background = "linear-gradient(to right, #3C746B, #43939E)";
       }
       selectWinner();
       element.style.pointerEvents = "none";
     }
 
     if (currentPlayer !== "") {
-        let randomDelayTime = ((Math.random() * 1000) + 210).toFixed();
-        setTimeout(() => {
-          bot(runBot);
-        }, randomDelayTime);
+      let randomDelayTime = ((Math.random() * 1000) + 210).toFixed();
+      setTimeout(() => {
+        bot(runBot);
+      }, randomDelayTime);
     }
   }
 }
@@ -155,17 +159,6 @@ function selectWinner() {
       Opoints++;
       OpointElement.textContent = Opoints;
     }
-
-    if (runBot && currentPlayer === "player2") {
-      if (playerSign === "X") {
-        Opoints--;
-        OpointElement.textContent = Opoints;
-      } else {
-        Xpoints--;
-        XpointElement.textContent = Xpoints;
-      }
-    }
-
   } else {
     const allBoxesFilled = Array.from(allBox).every((box) => {
       return box.getAttribute("id") === "X" || box.getAttribute("id") === "O";
@@ -182,37 +175,36 @@ function selectWinner() {
   }
 }
 
-function bot(runBot,element){
-  if(runBot){
+function bot(runBot, element) {
+  if (runBot) {
     let array = [];
     playerSign = "O";
 
     for (let i = 0; i < allBox.length; i++) {
-      if(allBox[i].childElementCount == 0){
-          array.push(i);
-      }           
+      if (allBox[i].childElementCount == 0) {
+        array.push(i);
+      }
     }
 
+    // Posicao Rand do Bot
     let randomBox = array[Math.floor(Math.random() * array.length)];
-      if(array.length > 0){
-        if(players.classList.contains("player")){
-          playerSign = "X";
-          allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
-          players.classList.add("active");
-          allBox[randomBox].setAttribute("id", playerSign);
-          //body.style.background = "linear-gradient(to right, #43939E, #3C746B)";               
-        }else{
-          allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
-          players.classList.remove("active");
-          allBox[randomBox].setAttribute("id", playerSign);
-          //body.style.background = "linear-gradient(to left, #3C746B,#43939E)";
-        }   
-        selectWinner();
-      }     
-      allBox[randomBox].style.pointerEvents = "none";
+    if (array.length > 0) {
+      if (players.classList.contains("player")) {
+        playerSign = "X";
+        allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`;
+        players.classList.add("active");
+        allBox[randomBox].setAttribute("id", playerSign);
+      } else {
+        allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`;
+        players.classList.remove("active");
+        allBox[randomBox].setAttribute("id", playerSign);
+      }
+      selectWinner();
+    }
+    allBox[randomBox].style.pointerEvents = "none";
   }
-
 }
+
 
 replayBtn.onclick = () => {
   // Limpar o tabuleiro
@@ -228,22 +220,25 @@ replayBtn.onclick = () => {
   // Voltar a exibir o tabuleiro
   playBoard.classList.add("show");
 
-  // Ativar novamente o jogador 1
-  currentPlayer = "player1";
-  players.classList.remove("active");
+  // Alternar jogadores
+  if (startingPlayer === "player1") {
+    currentPlayer = "player2";
+    players.classList.add("active");
+    startingPlayer = "player2";
+    setTimeout(() => {
+      bot(runBot); // Iniciar jogada da IA após um pequeno atraso
+    }, 300);
+  } else {
+    currentPlayer = "player1";
+    players.classList.remove("active");
+    startingPlayer = "player1";
+  }
 
   // Reativar o botão de seleção de jogador
   selectXBtn.disabled = false;
   selectOBtn.disabled = false;
 };
 
-sairBtn.onclick = ()=>{
+sairBtn.onclick = () => {
   window.location.reload();
-}
-
-
-
-
-
-
-
+};

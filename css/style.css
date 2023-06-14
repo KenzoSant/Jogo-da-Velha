@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 :root {
+    --primary-color: #fff;
     --first-color: #FAA916;
     --body-color: linear-gradient(to right, #665687, #2e1655);
 }
@@ -35,7 +36,7 @@ header{
 
 .menu,
 .modo{
-    background: #fff;
+    background: var(--primary-color);
     padding: 20px 25px 25px;
     border-radius: 5px;
     max-width: 330px;
@@ -50,7 +51,7 @@ header{
 }
 
 .select-box{
-    background: #fff;
+    background: var(--primary-color);
     padding: 20px 25px 25px;
     border-radius: 5px;
     max-width: 330px;
@@ -94,7 +95,7 @@ header{
     outline: none;
     background: var(--first-color);
     border-radius: 5px;
-    color: #fff;
+    color: var(--primary-color);
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -131,7 +132,7 @@ header{
 
 .play-board .details,
 .play-board .scoreboard{
-    background: #fff;
+    background: var(--primary-color);
     padding: 7px;
     border-radius: 5px;
 }
@@ -146,7 +147,7 @@ header{
 
 .scoreboard .points span{
     background-color: var(--first-color);
-    color:  white;
+    color:  var(--primary-color);
     width: 100%;
     border-radius: 5px;
     padding: 7px 0;
@@ -175,7 +176,7 @@ header{
 }
 
 .details span:first-child{
-    color: #fff;
+    color: var(--primary-color);
 }
 
 .details .slider{
@@ -195,7 +196,7 @@ header{
 }
 
 .players.active span:nth-child(2){
-    color: #fff;
+    color: var(--primary-color);
 }
 
 .players.active .slider{
@@ -215,7 +216,7 @@ header{
     margin: 2px;
     height: 80px;
     width: 80px;
-    background: #fff;
+    background: var(--primary-color);
     border-radius: 5px;
     font-size: 40px;
     text-align: center;
@@ -224,7 +225,7 @@ header{
 }
 
 .result-box{
-    background: #fff;
+    background: var(--primary-color);
     padding: 20px;
     border-radius: 5px;
     max-width: 350px;
@@ -268,7 +269,28 @@ header{
     outline: none;
     background: var(--first-color);
     border-radius: 5px;
-    color: #fff;
+    color: var(--primary-color);
     cursor: pointer;
     transition: all 0.3s ease;
+}
+
+@media screen and (max-width: 768px) {
+    .menu,
+    .modo,
+    .select-box,
+    .play-board,
+    .result-box {
+        max-width: 80%;
+        justify-content: center;
+    }
+    .option .playerO,
+    .option .playerX{
+        font-size: 15px;
+    }
+    .result-box .won-text{
+        font-size: 20px;
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+    }
 }
